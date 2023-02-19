@@ -399,7 +399,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 2, y: 2, z: 2, w: 2}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -432,13 +432,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Corruption_Bar
+      name: Corruption_Fill_Bar
       rect:
         serializedVersion: 2
-        x: 208
-        y: 47
-        width: 33
-        height: 162
+        x: 192
+        y: 48
+        width: 32
+        height: 160
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -477,10 +477,10 @@ TextureImporter:
       name: New_Bar
       rect:
         serializedVersion: 2
-        x: 256
+        x: 144
         y: 48
         width: 32
-        height: 161
+        height: 160
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -516,7 +516,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Corruption_Spreads
+      name: Corruption_Card
       rect:
         serializedVersion: 2
         x: 0
@@ -524,7 +524,7 @@ TextureImporter:
         width: 32
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -541,11 +541,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 192
+        y: 144
         width: 32
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -553,6 +553,69 @@ TextureImporter:
       bones: []
       spriteID: f71dfa120045f0b4d8986a49f8031088
       internalID: -1171416291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Corruption_Spreads
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64b8330f2a2403e4bace006a0d32f2eb
+      internalID: 1945913595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Filled_Box
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 254
+        width: 52
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 3, z: 3, w: 3}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6367c14b2ac51d745836d9312b469ad7
+      internalID: 1444204775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Key_Card
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11ffcb6ecbef5a840a00de48937e8ffa
+      internalID: 668920144
       vertices: []
       indices: 
       edges: []
@@ -571,6 +634,7 @@ TextureImporter:
       Albatross: 1026957448
       Actions_Box: 1873461947
       Tile_Face: -353430817
+      Corruption_Card: 2022944656
       Card_Back: -1711818291
       Burrowing_Owl: 1337000296
       New_Bar: 713683149
@@ -578,12 +642,14 @@ TextureImporter:
       New_Corrupted: 1002264034
       Key_Card_Phoenix: 176894878
       Key_Card_Falcon: -401010378
+      Filled_Box: 1444204775
       Key_Card_Albatross: -326406023
-      Corruption_Spreads: 2022944656
       Ability_Card: -1171416291
+      Corruption_Fill_Bar: -1991755646
+      Corruption_Spreads: 1945913595
       Tile_Back: -1962800582
       Corruption: -1651834580
-      Corruption_Bar: -1991755646
+      Key_Card: 668920144
       Falcon: 847635313
       Button: 1190860664
       Corruption_Indicator: 1121276948

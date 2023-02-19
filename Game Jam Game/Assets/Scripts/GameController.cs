@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -42,6 +43,16 @@ public class GameController : MonoBehaviour {
     [SerializeField] private TMP_Text currentPhaseText; 
     [SerializeField] private TMP_Text actionsRemainingText; 
 
+    //Display corruption level
+    [SerializeField] private Image corruptionFillBar;
+    [SerializeField] private Image corruptionMeter;
+
+    //Win and Lose Pages
+    [SerializeField] private GameObject losePage;
+    [SerializeField] private GameObject winPage;
+
+    [SerializeField] private GameObject birdGroup;
+
     void Awake() {
         instance = this;
     }
@@ -56,15 +67,16 @@ public class GameController : MonoBehaviour {
         //Update action remaining text
         actionsRemainingText.text = $"Actions: {actionsRemaining}";
 
-        
-    }
+        corruptionFillBar.fillAmount = corruptionLevel/10f;
 
-    //Order of play
-    //Board is set up 
-    //Draw 4 corruption cards (one at a time)
-    //Draw 2 key cards (make sure no Corruption Spreads cards are drawn)
-    //Start first action phase
-        //Only buttons active should be action buttons (and any ability cards in hand)
+        if (corruptionLevel >= 10) {
+            LoseGame();
+        }
+
+        if (birdGroup.transform.childCount == 4) {
+            WinGame();
+        }
+    }
     
     IEnumerator StartRound() {
         //Set up Board
@@ -92,7 +104,6 @@ public class GameController : MonoBehaviour {
     IEnumerator StartTurn() {
         //Enable action buttons
             //Let player take up to PLAYERACTIONSPERTURN
-            //TODO: add an end turn button
             //Once player has taken PLAYERACTIONSPERTURN actions or clicked "End Turn" button
                 //disable action buttons
         currentPhaseText.text = $"Action phase! Take up to {playerActionsPerTurn} actions";
@@ -108,7 +119,7 @@ public class GameController : MonoBehaviour {
         StartKeyCardDrawPhase();
         yield return new WaitUntil(() => keyCardDrawPhaseFinished == true);
         keyCardDrawPhaseFinished = false;
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
         EndKeyCardDrawPhase();
         //Draw corruption cards according to corruption level
             //Check if player loses game
@@ -131,14 +142,14 @@ public class GameController : MonoBehaviour {
 
     IEnumerator DealStartingHandEnum() {
         //yield return new WaitForSeconds(4f);
-        Debug.Log("Dealing starting hand");
+        //Debug.Log("Dealing starting hand");
         for (int i = 0; i < playerNumStartCards; i++) {
             yield return new WaitForSeconds(2f);
             keyDeck.DrawCardStartingHand();
         }
         yield return new WaitForSeconds(2f);
         dealStartingHandFinished = true;
-        Debug.Log("Finished Dealing Starting Hand");
+        //Debug.Log("Finished Dealing Starting Hand");
     }
 
     public void CorruptionBegins() {
@@ -147,14 +158,14 @@ public class GameController : MonoBehaviour {
 
     IEnumerator CorruptionBeginsEnum() {
         //yield return new WaitForSeconds(4f);
-        Debug.Log("Corruption Begins");
+        //Debug.Log("Corruption Begins");
         for (int i = 0; i < 4; i++) {
             yield return new WaitForSeconds(2f);
             corruptionDeck.DrawCard();
         }
         yield return new WaitForSeconds(2f);
         corruptionBeginsFinished = true;
-        Debug.Log("Finished Corruption Begins");
+        //Debug.Log("Finished Corruption Begins");
     }
 
     public void CorruptionSpreads() {
@@ -163,14 +174,37 @@ public class GameController : MonoBehaviour {
 
     IEnumerator CorruptionSpreadsEnum() {
         //yield return new WaitForSeconds(4f);
-        Debug.Log("Corruption Begins");
-        for (int i = 0; i < 4; i++) {
+        //Debug.Log("Corruption Spreads");
+
+        int numCardsToDraw = 0;
+        switch(corruptionLevel) {
+            case 1:
+            case 2:
+                numCardsToDraw = 2;
+                break;
+            case 3:
+            case 4:
+            case 5:
+                numCardsToDraw = 3;
+                break;
+            case 6:
+            case 7:
+                numCardsToDraw = 4;
+                break;
+            case 8:
+            case 9:
+                numCardsToDraw = 5;
+                break;
+        }
+
+
+        for (int i = 0; i < numCardsToDraw; i++) {
             yield return new WaitForSeconds(2f);
             corruptionDeck.DrawCard();
         }
         yield return new WaitForSeconds(2f);
         corruptionBeginsFinished = true;
-        Debug.Log("Finished Corruption Begins");
+        //Debug.Log("Finished Corruption Spreads");
     }
 
     private void DisableAllButtons() {
@@ -182,25 +216,28 @@ public class GameController : MonoBehaviour {
 
     private void StartKeyCardDrawPhase() {
         cardDrawsRemaining = playerCardsPerDrawPhase;
-        Debug.Log("Draw phase begin");
+        //Debug.Log("Draw phase begin");
         keyCardDrawButton.interactable = true;
+        if (keyDeck.numCardsInHand == playerHandSize) {
+            keyCardDrawPhaseFinished = true;
+        }
     }
 
     private void EndKeyCardDrawPhase() {
-        Debug.Log("Draw phase ended");
+        //Debug.Log("Draw phase ended");
         keyCardDrawButton.interactable = false;
     }
 
     private void StartActionPhase() {
         actionsRemaining = playerActionsPerTurn;
-        Debug.Log("Action phase begin");
+        //Debug.Log("Action phase begin");
         foreach (Button button in actionButtons) {
             button.interactable = true;
         }
     }
 
     private void EndActionPhase() {
-        Debug.Log("Action phase ended");
+        //Debug.Log("Action phase ended");
         foreach (Button button in actionButtons) {
             button.interactable = false;
         }
@@ -223,10 +260,33 @@ public class GameController : MonoBehaviour {
         if (cardDrawsRemaining == 0) {
             keyCardDrawPhaseFinished = true;
         }
-        Debug.Log(keyDeck.numCardsInHand);
+        //Debug.Log(keyDeck.numCardsInHand);
         if (keyDeck.numCardsInHand == playerHandSize) {
             keyCardDrawPhaseFinished = true;
         }
+    }
+
+    public void ShowTempMessage(string message) {
+        StartCoroutine(ShowTempMessageEnum(message));
+    }
+
+    IEnumerator ShowTempMessageEnum(string message) {
+        string prevMessage = currentPhaseText.text;
+        currentPhaseText.text = message;
+        yield return new WaitForSeconds(2f);
+        currentPhaseText.text = prevMessage;
+    }
+
+    public void WinGame() {
+        winPage.SetActive(true);
+    }
+
+    public void LoseGame() {
+        losePage.SetActive(true);
+    }
+
+    public void LoadMainMenu() {
+        SceneManager.LoadScene(0);
     }
 
 }

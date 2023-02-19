@@ -12,6 +12,8 @@ public class TileBehavior : MonoBehaviour {
     public GameObject corruption;
 
     public TMP_Text locationNameText;
+    public Button moveButton;
+    public Button cleanseButton;
     public Button tileButton;
 
     private int timer;
@@ -19,6 +21,8 @@ public class TileBehavior : MonoBehaviour {
     void Start() {
         locationNameText.text = locationName;
         tileButton.interactable = false;
+        moveButton.interactable = false;
+        cleanseButton.interactable = false;
     }
 
     IEnumerator Flip(GameObject newSide) {

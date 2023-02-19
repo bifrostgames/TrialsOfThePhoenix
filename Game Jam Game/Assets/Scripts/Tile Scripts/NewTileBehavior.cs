@@ -16,21 +16,30 @@ public class NewTileBehavior : MonoBehaviour {
     [SerializeField] private TMP_Text locationNameText;
     public string locationName;
 
-    //Tile Button
-    [SerializeField] Button tileButton;
+    //Tile Buttons
+    [SerializeField] GameObject moveButton;
+    [SerializeField] GameObject cleanseButton;
     [SerializeField] private Image shadeImage;
 
     //Keep track of what face is showing
     [SerializeField] private bool isFaceUp;
     //Keep track of corruption leve
-    [SerializeField] private bool isCorrupted;
+    public bool isCorrupted;
+
+    //To control discarding ability cards
+    [SerializeField] private KeyDeckBehavior keyDeck;
+
+    void Awake() {
+        keyDeck = GameObject.Find("Key Card Group").GetComponent<KeyDeckBehavior>();
+    }
 
     void Start() {
         //Start tile face down
         tileImage.sprite = tileBack;
         locationNameText.text = "";
-        //Set button to uninteractable
-        tileButton.interactable = false;
+        //Set buttons to uninteractable
+        DeactivateMoveButton();
+        DeactivateCleanseButton();
         //Deactivate shade image
         UnshadeTile();
     }
@@ -72,6 +81,9 @@ public class NewTileBehavior : MonoBehaviour {
 
     public void Corrupt() {
         if (isCorrupted) {
+            //Check if tile is a bird cage
+            
+
             //If the tile is corrupted, remove it
             gameObject.SetActive(false);
             isCorrupted = false;
@@ -83,17 +95,20 @@ public class NewTileBehavior : MonoBehaviour {
         }
     }
 
-    public void Cleanse() {
-        //tileImage.sprite = tileFace;
-        isCorrupted = false;
+    public void ActivateMoveButton() {
+        moveButton.SetActive(true);
     }
 
-    public void ActivateButton() {
-        tileButton.interactable = true;
+    public void DeactivateMoveButton() {
+        moveButton.SetActive(false);
     }
 
-    public void DeactivateButton() {
-        tileButton.interactable = false;
+    public void ActivateCleanseButton() {
+        cleanseButton.SetActive(true);
+    }
+
+    public void DeactivateCleanseButton() {
+        cleanseButton.SetActive(false);
     }
 
     public void ShadeTile() {
@@ -107,10 +122,18 @@ public class NewTileBehavior : MonoBehaviour {
     }
 
     public void MoveHere() {
-        Debug.Log($"Move to {this.name}");
+        //Debug.Log($"Move to {this.name}");
         NewBoardManager board = GetComponentInParent<NewBoardManager>();
         board.UpdatePlayerIndex(gameObject);
         board.CompleteMove();
+    }
+
+    public void CleanseHere() {
+        //Debug.Log($"Cleanse {this.name}");
+        NewBoardManager board = GetComponentInParent<NewBoardManager>();
+        board.CompleteCleanse();
+        tileImage.sprite = tileFace;
+        isCorrupted = false;
     }
 
 }

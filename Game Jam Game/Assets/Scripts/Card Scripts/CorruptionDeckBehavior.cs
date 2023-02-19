@@ -53,7 +53,7 @@ public class CorruptionDeckBehavior : MonoBehaviour {
     }
 
     public void ShuffleDiscard() {
-        Debug.Log("Shuffled Corruption Card discard pile into Corruption Card draw pile");
+        //Debug.Log("Shuffled Corruption Card discard pile into Corruption Card draw pile");
         foreach (GameObject card in discardPile) {
             drawPile.Add(card);
         }
